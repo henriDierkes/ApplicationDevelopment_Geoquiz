@@ -1,0 +1,35 @@
+/* Reset body and html margins and padding */
+body, html
+{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	font-family: 'Verdana';
+}
+
+.sidenav
+{
+	height: 100%; /* Full-height: remove this if you want "auto" height */
+	width: 400px; /* Set the width of the sidebar */
+	z-index: 1; /* Stay on top */
+	top: 0; /* Stay at the top */
+	left: 0;
+	background-color: CadetBlue;
+	padding-top: 10px;
+	padding-left: 10px; 
+	color: white;
+	position: center;
+
+}
+
+#map-container
+{
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 410px;
+	position: absolute;
+	padding-top: 10px;
+	background-color: Gray;
+}
+
