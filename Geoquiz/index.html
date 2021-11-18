@@ -7,7 +7,9 @@
 		
 		<!-- Load all external files-->
 		<link rel="stylesheet" href="../libs/openlayers/ol.css"/>
-		<link rel = "stylesheet" href = "./style.css"/>		
+		<link rel = "stylesheet" href = "./style.css"/>	
+		<!--ASTRID----------------------------------------------------->
+		<script src="../Data/questions.json" ></script>		
 			
 	</head>
 	
@@ -15,7 +17,10 @@
 			
 		<div class = "sidenav">
 			<h3>Test your geographical knowledge</h3>
-			<p>Questions</p>
+			<!--ASTRID----------------------------------------------------->
+			<p>Question x: <span id="myQuestion"></span></p>
+			<p>Answer x: <span id="myAnswer"></span></p>
+			<!------------------------------------------------------->
 		</div>
 		
 		<div id = "map-container"></div>
