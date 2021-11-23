@@ -51,21 +51,35 @@ function init()
 	map.addLayer(markerGroupCorrect);
 	
 	
-	loadQuestion;
+	
 	
 }
 
 // Load questions 
-function loadQuestion(data)
-{
-	var json = JSON.parse(data);
+function loadQuestion()
+{ //myQuestion
+	for(var i = 0; i < data.length; i++){
+		//console.log(data[i].question)
+		//console.log(document.getElementById("answer").value)
+		
+		//another function for this down to be evaluated
+		//prints out the question to log
+		document.getElementById("myQuestion").innerHTML = data[i].question
+		/*
+		var givenQuestion = data[i].correctAnswer
+		var givenAnswer = document.getElementById("answer").value
+		if(givenQuestion === givenAnswer){
+			console.log("YES!")
+		}else{
+			console.log("NO")
+		}*/
 	
-	var questionNumber = getRandomNumber(json.questions.length);
-	var question = json[str(questionNumber)];
+	}
+	// console.info(data);
 	
-	console.info(question);
+	// var questions = data[Math.floor(Math.random()*data.length)];
 	
-	document.getElementById("myQuestions").innerHTML = question.questions;
+	// document.getElementById("myQuestion").innerHTML = questions["questions"];
 }
 
 
@@ -98,7 +112,7 @@ function searchResponse( data )
 {
 	var latlon = [];
 	var answer = [];
-	
+	loadQuestion();
 	// Loop Result Location
 	for (var i= 0; i< data.features.length; i++)
 	{
@@ -130,14 +144,15 @@ function searchResponse( data )
 	// Add marker to layer group
 	markerGroup.addLayer( marker );
 	
-	checkAnswer(marker);
+	//checkAnswer(marker);
 }
 
+/*
 function checkAnswer(marker)
 {
 	if(marker == correctAnswer)
 	{
-		
+		alert("Bravo!"));
 	}
 	else
 	{
@@ -165,7 +180,7 @@ function checkAnswer(marker)
 	
 	markerGroupCorrect.addLayer(marker);
 }
-
+*/
 
 // Main Entry point
 $(document).ready(init);
