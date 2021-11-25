@@ -14,6 +14,16 @@ var markerGroupCorrect;
 var numberOfQuestions = 0;
 var usedQuestions = [];
 
+// Create different marker for correct answer
+var greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 
 // Functions to add OpenLayers map
 
@@ -62,32 +72,15 @@ function init()
 
 // Load questions 
 function loadQuestion()
-{ //myQuestion
-	//for(var i = 0; i < data.length; i++){
-		//console.log(data[i].question)
-		//console.log(document.getElementById("answer").value)
-		
-		//another function for this down to be evaluated
-		//prints out the question to log
-	//	document.getElementById("myQuestion").innerHTML = data[i].question
-		/*
-		var givenQuestion = data[i].correctAnswer
-		var givenAnswer = document.getElementById("answer").value
-		if(givenQuestion === givenAnswer){
-			console.log("YES!")
-		}else{
-			console.log("NO")
-		}*/
-	
-	//}
-	console.info(data);
+{ 
+	//console.info(data);
 	
 	//pick a random question from the list of questions in questions.js	
 	//and check, that this question is not used already in the game 
 	do{
 		//get random question
 		var questions = data[Math.floor(Math.random()*data.length)];
-		console.log("In do-loop " + questions.question_id);
+		//console.log("In do-loop " + questions.question_id);
 	}
 	//as long as it was not already asked in this game
 	while(usedQuestions.includes(questions.question_id))
@@ -98,9 +91,9 @@ function loadQuestion()
 	//increase the counter by one
 	numberOfQuestions++;
 	//store the id of the used question in an Array
-	usedQuestions.push(questions.question_id);
+	usedQuestions.push(questions.question_id, questions.correctAnswer);
 	
-	console.log("Number of questions " + numberOfQuestions);
+	//console.log("Number of questions " + numberOfQuestions);
 	console.log("Used Questions " + usedQuestions);
 	
 }
@@ -124,8 +117,6 @@ function searchClick()
 
 function startSearch(s)
 {
-	
-	console.info( "Search:", s);
 	
 	$.getJSON('./data/PopPlaces.json', {s}, searchResponse);
 	
@@ -164,8 +155,6 @@ function searchResponse( data )
 			latlon.push(lat, lng); 				// string of two single strings
 			latlon[ 0 ] = parseFloat(latlon [ 0 ]);
 			latlon[ 1 ] = parseFloat(latlon [ 1 ]); 
-					
-			console.info("Coordinates:", latlon);
 						
 			var marker = L.marker
 			(
@@ -174,51 +163,85 @@ function searchResponse( data )
 					title: id
 				}
 			);
-			
-			answer.push(marker);
 		}		
 	}	
 	
 	// Add marker to layer group
-	markerGroup.addLayer( marker );
+	markerGroup.addLayer( marker );	
 	
-	//checkAnswer(marker);
+	loadJSON();
 }
 
-/*
-function checkAnswer(marker)
+function loadJSON()
 {
-	if(marker == correctAnswer)
+	$.getJSON
+	(
+		"./data/PopPlaces.json",
+		{},
+		checkAnswer
+	);
+}
+
+
+function checkAnswer(json)
+{
+	console.log(json);
+	
+	var latlonCorrect = [];
+	
+	var givenAnswer = document.getElementById("answer").value;
+	
+
+	if(givenAnswer == usedQuestions[1])
 	{
-		alert("Bravo!"));
+		console.info("YES!");
+		
+		//and display it in the left canvas
+		//document.getElementById("points").innerHTML = score;
 	}
+
 	else
 	{
-		// Search for correctAnswer in JSOn Object, get coordinates and add marker
 		// Loop Result Location
-		for (var i= 0; i< data.features.length; i++)
+		for (var i= 0; i< json.features.length; i++)
 		{
-			var id = data.features[i].properties.NAME;
-			var lat = data.features[i].properties.LATITUDE;
-			var lng = data.features[i].properties.LONGITUDE;
-			latlon.push(lat, lng); 				// string of two single strings
-			latlon[ 0 ] = parseFloat(latlon [ 0 ]);
-			latlon[ 1 ] = parseFloat(latlon [ 1 ]); 
-			
-			var marker = L.marker
-			(
-				{lng: latlon[ 1 ], lat: latlon[ 0 ]},
-				{
-					title: id
-				}
-			);
-			
+			if (json.features[i].properties.NAME == usedQuestions[1])
+			{
+				var id = json.features[i].properties.NAME;
+					
+				var lat = json.features[i].properties.LATITUDE;
+				var lng = json.features[i].properties.LONGITUDE;
+					
+				latlonCorrect.push(lat, lng); 				// string of two single strings
+				latlonCorrect[ 0 ] = parseFloat(latlonCorrect [ 0 ]);
+				latlonCorrect[ 1 ] = parseFloat(latlonCorrect [ 1 ]); 
+							
+				console.info("Coordinates:", latlonCorrect);
+								
+				var marker = L.marker
+				(
+					{lng: latlonCorrect[ 1 ], lat: latlonCorrect[ 0 ]},
+					{
+						title: id,
+						icon: greenIcon
+					}
+				);
+
+				// Create Popup
+				var popup = "<p>";
+				popup += id;	
+				popup += "</p>"
+					
+				marker.bindPopup(popup);				
+					
+			}	
 		}
+		
+		// Add marker to layer group
+		markerGroupCorrect.addLayer( marker );
+		
 	}
-	
-	markerGroupCorrect.addLayer(marker);
 }
-*/
 
 // Main Entry point
 $(document).ready(init);
