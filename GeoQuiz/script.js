@@ -182,14 +182,11 @@ function checkAnswer(json)
 	var latlonCorrect = [];
 	
 	var givenAnswer = document.getElementById("answer").value;
-	
 
 	if(givenAnswer == currentQuestion["correctAnswer"])
 	{
 		console.info("YES!");
-		score++;
-		
-		
+		score++;	
 	}
 
 	else
@@ -244,12 +241,14 @@ function checkAnswer(json)
 			//numberOfQuestions = 0;
 			//usedQuestions = [];
 			//score = 0;
-		var retry = confirm("End of Game! Your score: " + score +"/5 \nRetry?");
+		var retry = confirm("End of Game! \nYour score: " + score +"/5 \nRetry?");
 		if (retry){
 			location.reload(); //start a new game/round
 		}
 		else{
-			$( "#myQuestion" ).fadeOut("slow"); //fade out the question section on the left side and just show the map with the markers
+			//fade out the question section on the left side and just show the map with the markers
+			$( ".main" ).fadeOut("slow"); 
+			$( "#myQuestion" ).fadeOut("slow");
 		}
 	}
 	else{
