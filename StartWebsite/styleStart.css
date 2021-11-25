@@ -1,0 +1,141 @@
+* 
+{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body 
+{
+	background: #F0E9D2;
+}
+
+.start 
+{
+	z-index: 10;
+	width: 100%;
+	height: 100vh;
+}
+.wrapper 
+{
+	font-family: 'Verdana';
+	background: #E6DDC4;
+	border-radius: 6px;
+	width: 100%;
+	height: 500px;
+	box-shadow: inset 0 12px 0 -7px #678983;
+	opacity: 1;
+	position: fixed;
+}
+
+h1 
+{
+	color: #181D31;
+	text-align: center;
+	font-size: 27px;
+	line-height: 35px;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+.start-content 
+{
+	text-align: center;
+	line-height: 24px;
+	padding: 0 20px;
+	padding-bottom: 40px;
+}
+.active-slide
+{
+  opacity: 1;
+  z-index: 2;
+}
+
+.btn 
+{
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 3px;
+	box-sizing: border-box;
+	text-decoration: none;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color: #678983;
+	border: none;
+	box-shadow: inset 0 -12px 0 -7px rgba(0,0,0,0.17);
+	text-align: center;
+	position: relative;
+}
+
+.start-btn 
+{
+	width: 70%;
+	margin: 0 15%;
+}
+
+.start-btn:active
+{
+	top: 0.1em;
+}
+
+.start-ps 
+{
+	padding: 25px 40px;
+	font-size: 14px;
+	color: #b2b2b2;
+}
+
+.start-ps span 
+{
+	font-size: 25px;
+}
+
+
+@media (min-width: 768px)
+{
+  .wrapper 
+	{
+		width: 70%;
+		position: absolute;
+		left: 50%;
+		margin-top: 20px;
+		margin-left: -35%;
+	}
+	
+	.start-content 
+	{
+		padding: 0 40px;
+		padding-bottom: 40px;
+	}
+	
+	.start-btn 
+	{
+		width: 40%;
+		margin: 0 30%;
+	}
+	
+}
+@media (min-width: 1200px) 
+{
+  .wrapper 
+	{
+		width: 50%;
+		position: absolute;
+		left: 50%;
+		margin-top: 20px;
+		margin-left: -25%;
+		height: 400px;
+		top: 50%;
+		margin-top: -200px;
+	}
+	
+	.start-content 
+	{
+		padding: 0 80px;
+		padding-bottom: 40px;
+	}
+	
+	.start-btn 
+	{
+		width: 40%;
+		margin: 0 30%;
+	}
+}
