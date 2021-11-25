@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset = "UTF-8" />
+		<title>Geoquiz</title>
+		
+		<!-- Load all external files-->
+		<link rel="stylesheet" href="../libs/leaflet/leaflet.css"/>
+		<link rel= "stylesheet" href = "./style.css"/>		
+		
+			
+		<script type = "text/javascript" src= "../libs/jquery-3.2.1.js"></script>
+		<script type = "text/javascript" src= "../libs/leaflet/leaflet.js"></script>
+		<script type = "text/javascript" src= "./script.js"></script>
+		<script type = "text/javascript" src= "./questions.js"></script>	
+			
+	</head>
+	
+	<body>
+		
+		<div class = "sidenav">
+			<div class = "container">
+				<div id = "quiz"><h3>Test your geographical knowledge</h3></div>
+			
+		
+				<div id="myQuestion"></div> 
+				
+				<br>
+				
+				<div class = "main">
+					<input type = "text" id = "answer" placeholder= "Your answer"></input>
+					<button id = "Go-button">Go!</button>
+				</div>
+			</div>
+			
+			<div class = "score"> <p>Your score is:</p>
+				
+				<input type = "text" id = "points"> </input>
+			</div> 
+		
+		<div id = "map-container"></div>
+		
+		
+	</body>
+</html>
