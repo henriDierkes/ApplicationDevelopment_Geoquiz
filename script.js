@@ -11,8 +11,12 @@ var markerGroupCorrect;
 
 //global variables to limit number of questions per game
 //and to store id´s of already used questions per game to avoid asking a question twice
+//and to store the current question to check if the answer is correct
+//and one variable to count the correct answers
 var numberOfQuestions = 0;
 var usedQuestions = [];
+var currentQuestion;
+var score = 0;
 
 // Create different marker for correct answer
 var greenIcon = new L.Icon({
@@ -79,19 +83,19 @@ function loadQuestion()
 	//and check, that this question is not used already in the game 
 	do{
 		//get random question
-		var questions = data[Math.floor(Math.random()*data.length)];
-		//console.log("In do-loop " + questions.question_id);
+		currentQuestion = data[Math.floor(Math.random()*data.length)];
+		//console.log("In do-loop " + currentQuestion.question_id);
 	}
 	//as long as it was not already asked in this game
-	while(usedQuestions.includes(questions.question_id))
+	while(usedQuestions.includes(currentQuestion.question_id))
 	
 	//and display it in the left canvas
-	document.getElementById("myQuestion").innerHTML = questions["question"];
+	document.getElementById("myQuestion").innerHTML = currentQuestion["question"];
 	
 	//increase the counter by one
 	numberOfQuestions++;
 	//store the id of the used question in an Array
-	usedQuestions.push(questions.question_id, questions.correctAnswer);
+	usedQuestions.push(currentQuestion.question_id, currentQuestion.correctAnswer);
 	
 	//console.log("Number of questions " + numberOfQuestions);
 	console.log("Used Questions " + usedQuestions);
@@ -117,30 +121,13 @@ function searchClick()
 
 function startSearch(s)
 {
-	
-	$.getJSON('./data/PopPlaces.json', {s}, searchResponse);
-	
+		$.getJSON('./data/PopPlaces.json', {s}, searchResponse);	
 }
 
 function searchResponse( data )
 {
 	var latlon = [];
 	var answer = [];
-	
-	//after giving an answer load next question --> clicking on Go-Button at the moment
-	//or when answer was checked
-	//############# have to decide, when the next question should be loaded!!!!!!#####
-	if (numberOfQuestions >= 5){
-		//after 5 questions the game is over and the results should be displayed!
-		//max. number of questions per game can be changed of course
-		console.log("End of Game!");
-		//set counter and array for question control back to zero
-		numberOfQuestions = 0;
-		usedQuestions = [];
-	}
-	else{
-		loadQuestion(); 
-	}
 	
 	// Loop Result Location
 	for (var i= 0; i< data.features.length; i++)
@@ -167,9 +154,19 @@ function searchResponse( data )
 	}	
 	
 	// Add marker to layer group
-	markerGroup.addLayer( marker );	
+	// if userinput is misspelled or not a city name which is contained in the json file
+	// there is no marker to set
+	// TODO: improvement of Error Handling :)
+	// for example letting the user know and try again
+	if(marker != undefined){
+		markerGroup.addLayer( marker );
+	}
+	else{
+		console.log("Misspelled or not a city!!!!"); //TODO: better Error Handling :)
+	}	
 	
 	loadJSON();
+	
 }
 
 function loadJSON()
@@ -192,9 +189,10 @@ function checkAnswer(json)
 	var givenAnswer = document.getElementById("answer").value;
 	
 
-	if(givenAnswer == usedQuestions[1])
+	if(givenAnswer == currentQuestion["correctAnswer"])
 	{
 		console.info("YES!");
+		score++;
 		
 		//and display it in the left canvas
 		//document.getElementById("points").innerHTML = score;
@@ -205,7 +203,7 @@ function checkAnswer(json)
 		// Loop Result Location
 		for (var i= 0; i< json.features.length; i++)
 		{
-			if (json.features[i].properties.NAME == usedQuestions[1])
+			if (json.features[i].properties.NAME == currentQuestion["correctAnswer"])
 			{
 				var id = json.features[i].properties.NAME;
 					
@@ -240,6 +238,22 @@ function checkAnswer(json)
 		// Add marker to layer group
 		markerGroupCorrect.addLayer( marker );
 		
+	}
+	//after giving an answer load next question --> clicking on Go-Button at the moment
+	//or when answer was checked
+	//############# have to decide, when the next question should be loaded!!!!!!#####
+	if (numberOfQuestions >= 5){
+		//after 5 questions the game is over and the results should be displayed!
+		//max. number of questions per game can be changed of course
+		console.log("End of Game!");
+		//set counter and array for question control and score back to zero
+		numberOfQuestions = 0;
+		usedQuestions = [];
+		document.getElementById("myQuestion").innerHTML = "End of Game! Your score: " + score +"/5";
+		score = 0;
+	}
+	else{
+		loadQuestion(); 
 	}
 }
 
